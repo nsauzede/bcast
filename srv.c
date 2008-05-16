@@ -1,16 +1,8 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
-#ifndef _WIN32
-typedef int SOCKET;
-#endif
-
-typedef struct pixel {
-	int r, g, b;
-} pixel_t;
+#include "common.h"
 
 int get_bits( int x, int y, int w, int h, pixel_t *dest)
 {
@@ -71,15 +63,58 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 			}
 		}
 	}
+#else
+	int i, j;
+	static int f = 0;
+	for (j = 0; j < h; j++)
+	{
+		for (i = 0; i < w; i++)
+		{
+			dest->r = f+j+i;
+			dest->g = f+j+i+1;
+			dest->b = f+j+i+2;
+			dest++;
+		}
+	}
+	f++;
 #endif
 
 	return result;
 }
 
-int send_bits( SOCKET sock, pixel_t *bits, int size)
+int send_bits( SOCKET sock, void *bits, int size, int width, int height, int frame)
 {
-	send( sock, (void *)size, sizeof( size), 0);
-	send( sock, (void *)bits, size, 0);
+	packet_t packet;
+	uint16_t seq;
+	int left, len;
+	
+	packet.frame = frame;
+	packet.width = width;
+	packet.height = height;
+	seq = 0;
+	left = size;
+//	printf( "sending frame %d, dims=%dx%d\n", frame, width, height);
+	while (left > 0)
+	{
+		packet.seq = seq;
+		len = left;
+		if (len > sizeof(packet.payload))
+			len = sizeof( packet.payload);
+		memcpy( packet.payload, bits, len);
+		send( sock, &packet, sizeof( packet), 0);
+		left -= len;
+		bits += len;
+#if 0
+		printf( "sent seq %d :\n", seq++);
+		int i;
+		for (i =0; i < sizeof( packet); i++)
+		{
+			printf( "%02X", *((char *)&packet + i));
+		}
+		printf( "\n");
+#endif
+	}
+//	printf( "sent frame %d, dims=%dx%d\n", frame, width, height);
 
 	return 0;
 }
@@ -109,8 +144,8 @@ SOCKET create_sock( int port, char *addr)
 
 int main()
 {
-#define W 15
-#define H 15
+#define W 4
+#define H 4
 #define X 10
 #define Y 10
 #define ADDR "127.0.0.1"
@@ -126,16 +161,15 @@ int main()
 	char *addr = ADDR;
 
 	sock = create_sock( port, addr);
-	size = sizeof( *dest) * w * h;
+	size = sizeof(*dest) * w * h;
 	dest = malloc( sizeof( *dest) * w * h);
+	int frame = 0;
 	while (1)
 	{
 		get_bits( x, y, w, h, dest);
-		send_bits( sock, dest, size);
-		Sleep( 25);
-
-#if 0
+#if 1
 		int i, j;
+		printf( "about to send frame %d, dims=%dx%d :\n", frame, w, h);
 		for (j = 0; j < h; j++)
 		{
 			for (i = 0; i < w; i++)
@@ -145,6 +179,13 @@ int main()
 			printf( "\n");
 		}
 #endif
+		send_bits( sock, dest, size, w, h, frame++);
+#ifdef _WIN32
+		Sleep( 5000);
+#else
+		sleep( 5);
+#endif
+
 	}
 
 	return 0;
