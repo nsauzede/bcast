@@ -63,7 +63,7 @@ int recv_bits( SOCKET sock, void *dest, int cur_width, int cur_height, int *widt
 			if (frame)
 				*frame = packet.frame;
 		}
-#if 1
+#if 0
 		printf( "receiving frame %d seq %d :\n", packet.frame, packet.seq);
 		int i;
 		for (i = 0; i < sizeof( packet); i++)

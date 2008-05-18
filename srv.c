@@ -105,7 +105,7 @@ int send_bits( SOCKET sock, void *bits, int size, int width, int height, int fra
 		left -= len;
 		bits += len;
 #if 0
-		printf( "sent seq %d :\n", seq++);
+		printf( "sent frame %d seq %d :\n", frame, seq);
 		int i;
 		for (i =0; i < sizeof( packet); i++)
 		{
@@ -113,6 +113,7 @@ int send_bits( SOCKET sock, void *bits, int size, int width, int height, int fra
 		}
 		printf( "\n");
 #endif
+		seq++;
 	}
 //	printf( "sent frame %d, dims=%dx%d\n", frame, width, height);
 
