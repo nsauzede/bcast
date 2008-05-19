@@ -2,7 +2,7 @@ TARGET= srv cli
 
 UNAME=$(shell uname)
 
-ifeq ($(UNAME),mingw)
+ifeq ($(UNAME),MINGW32_NT-5.1)
 WIN32=1
 endif
 
@@ -23,4 +23,7 @@ cli:	cli.o
 
 clean:
 	$(RM) $(TARGET) *.o
+
+clobber: clean
+	$(RM) *~
 

@@ -101,7 +101,7 @@ int send_bits( SOCKET sock, void *bits, int size, int width, int height, int fra
 		if (len > sizeof(packet.payload))
 			len = sizeof( packet.payload);
 		memcpy( packet.payload, bits, len);
-		send( sock, &packet, sizeof( packet), 0);
+		send( sock, (const void *)&packet, sizeof( packet), 0);
 		left -= len;
 		bits += len;
 #if 0

@@ -34,7 +34,7 @@ int recv_bits( SOCKET sock, void *dest, int cur_width, int cur_height, int *widt
 	{
 		int n;
 		
-		n = recv( sock, &packet, sizeof(packet), 0);
+		n = recv( sock, (void *)&packet, sizeof(packet), 0);
 		if (n == -1)
 		{
 #ifdef _WIN32
