@@ -9,6 +9,12 @@ SOCKET create_sock( int port, char *addr)
 {
 	SOCKET s;
 
+#ifdef _WIN32
+	WORD ver;
+	WSADATA wsadata;
+	ver = MAKEWORD( 2, 2);
+	WSAStartup( ver, &wsadata);
+#endif
 	s = socket( AF_INET, SOCK_DGRAM, 0);
 	struct sockaddr_in sa;
 	memset( &sa, 0, sizeof( sa));
@@ -34,10 +40,13 @@ int recv_bits( SOCKET sock, void *dest, int cur_width, int cur_height, int *widt
 	{
 		int n;
 		
+//		printf( "about to recv packet..\n");
 		n = recv( sock, (void *)&packet, sizeof(packet), 0);
-		if (n == -1)
+		if (n == SOCKET_ERROR)
 		{
+			
 #ifdef _WIN32
+			printf( "recv: error: %d\n", WSAGetLastError());
 			Sleep( 1000);
 #else
 			sleep( 1);

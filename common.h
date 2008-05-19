@@ -12,6 +12,7 @@
 
 #ifndef _WIN32
 typedef int SOCKET;
+#define SOCKET_ERROR -1
 #endif
 
 #define PAYLOAD_SIZE	15
