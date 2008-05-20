@@ -1,4 +1,4 @@
-TARGET= srv cli
+TARGET= srv cli scli
 
 UNAME=$(shell uname)
 
@@ -13,6 +13,10 @@ ifdef WIN32
 LDFLAGS+=-luser32 -lgdi32 -lws2_32
 endif
 
+SDL_CONFIG=sdl-config
+SDL_CFLAGS=`$(SDL_CONFIG) --cflags`
+SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
+
 all:	$(TARGET)
 
 srv:	srv.o
@@ -20,6 +24,10 @@ srv:	srv.o
 
 cli:	cli.o
 	$(CC) -o $@ $^ $(LDFLAGS)
+
+scli.o:	CFLAGS+=$(SDL_CFLAGS)
+scli:	scli.o
+	$(CC) -o $@ $^ $(LDFLAGS) $(SDL_LDFLAGS)
 
 clean:
 	$(RM) $(TARGET) *.o
