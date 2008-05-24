@@ -184,7 +184,7 @@ int main()
 #ifdef _WIN32
 		Sleep( 5000);
 #else
-		usleep( 500);
+		usleep( 500000);
 #endif
 
 	}
