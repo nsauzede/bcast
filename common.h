@@ -17,8 +17,10 @@ typedef int SOCKET;
 
 #define PAYLOAD_SIZE	15
 
+#pragma pack(1)
+
 typedef struct pixel {
-	int r, g, b;
+	uint8_t r, g, b;
 } pixel_t;
 
 typedef struct packet {
@@ -28,3 +30,5 @@ typedef struct packet {
 	uint16_t height;
 	unsigned char payload[PAYLOAD_SIZE];
 } packet_t;
+
+#pragma pack()

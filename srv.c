@@ -70,13 +70,13 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 	{
 		for (i = 0; i < w; i++)
 		{
-			dest->r = f+j+i;
-			dest->g = f+j+i+1;
-			dest->b = f+j+i+2;
+			dest->r = f+1*j+2*i;
+			dest->g = f+3*j+4*(i+1);
+			dest->b = f+5*j+6*(i+2);
 			dest++;
 		}
 	}
-	f++;
+	f+=10;
 #endif
 
 	return result;
@@ -145,8 +145,8 @@ SOCKET create_sock( int port, char *addr)
 
 int main()
 {
-#define W 4
-#define H 4
+#define W 40
+#define H 40
 #define X 10
 #define Y 10
 #define ADDR "127.0.0.1"
@@ -184,7 +184,7 @@ int main()
 #ifdef _WIN32
 		Sleep( 5000);
 #else
-		sleep( 5);
+		usleep( 500);
 #endif
 
 	}
