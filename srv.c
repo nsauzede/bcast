@@ -69,7 +69,8 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 		}
 	}
 #elif 1
-	Display* pDisplay = XOpenDisplay( ":0");
+        char* display = getenv( "DISPLAY");
+	Display* pDisplay = XOpenDisplay( display);
 	do
 	{
 		XSync( pDisplay, False);
