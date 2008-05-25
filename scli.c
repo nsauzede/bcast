@@ -99,7 +99,11 @@ int recv_bits( SOCKET sock, void *dest, int cur_width, int cur_height, int *widt
 int main( int argc, char* argv[])
 {
 #define PORT 12345
+#if 1
 #define ADDR "127.0.0.1"
+#else
+#define ADDR "192.168.0.10"
+#endif
 	SOCKET sock;
 	int port = PORT;
 	char *addr = ADDR;

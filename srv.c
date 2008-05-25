@@ -88,9 +88,9 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 		{
 			unsigned long pixel;
 			pixel = XGetPixel( pImage, i, j);
-			dest->r = pixel & 0xFF;
+			dest->b = pixel & 0xFF;
 			dest->g = (pixel & 0xFF00) >> 8;
-			dest->b = (pixel & 0xFF0000) >> 16;
+			dest->r = (pixel & 0xFF0000) >> 16;
 			dest++;
 		}
 	}
