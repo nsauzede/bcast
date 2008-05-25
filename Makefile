@@ -11,16 +11,19 @@ CFLAGS+=-g -O0 -fno-omit-frame-pointer
 
 ifdef WIN32
 LDFLAGS+=-luser32 -lgdi32 -lws2_32
+else
+SRV_LDFLAGS=-lX11
 endif
 
 SDL_CONFIG=sdl-config
 SDL_CFLAGS=`$(SDL_CONFIG) --cflags`
 SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
 
+
 all:	$(TARGET)
 
 srv:	srv.o
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS) $(SRV_LDFLAGS)
 
 cli:	cli.o
 	$(CC) -o $@ $^ $(LDFLAGS)

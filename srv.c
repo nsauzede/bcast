@@ -4,6 +4,11 @@
 
 #include "common.h"
 
+#ifndef _WIN32
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#endif
+
 int get_bits( int x, int y, int w, int h, pixel_t *dest)
 {
 	int result = 0;
@@ -63,6 +68,33 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 			}
 		}
 	}
+#elif 1
+	Display* pDisplay = XOpenDisplay( ":0");
+	do
+	{
+		XSync( pDisplay, False);
+	} while (XPending( pDisplay));
+	Drawable hWindow;
+	hWindow = XDefaultRootWindow( pDisplay);
+	XImage* pImage;
+	unsigned long planes = (typeof(planes))-1;
+	int format = ZPixmap;
+	pImage = XGetImage( pDisplay, hWindow, x, y, w, h, planes, format);
+	int i, j;
+	for (j = 0; j < h; j++)
+	{
+		for (i = 0; i < w; i++)
+		{
+			unsigned long pixel;
+			pixel = XGetPixel( pImage, i, j);
+			dest->r = pixel & 0xFF;
+			dest->g = (pixel & 0xFF00) >> 8;
+			dest->b = (pixel & 0xFF0000) >> 16;
+			dest++;
+		}
+	}
+	XDestroyImage( pImage);
+	XCloseDisplay( pDisplay);
 #else
 	int i, j;
 	static int f = 0;
