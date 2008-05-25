@@ -1,4 +1,4 @@
-TARGET= srv cli scli
+TARGET= srv.exe cli.exe scli.exe
 
 UNAME=$(shell uname)
 
@@ -22,14 +22,14 @@ SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
 
 all:	$(TARGET)
 
-srv:	srv.o
+srv.exe:	srv.o
 	$(CC) -o $@ $^ $(LDFLAGS) $(SRV_LDFLAGS)
 
-cli:	cli.o
+cli.exe:	cli.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 scli.o:	CFLAGS+=$(SDL_CFLAGS)
-scli:	scli.o
+scli.exe:	scli.o
 	$(CC) -o $@ $^ $(LDFLAGS) $(SDL_LDFLAGS)
 
 clean:

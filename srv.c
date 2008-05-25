@@ -214,7 +214,7 @@ int main()
 #endif
 		send_bits( sock, dest, size, w, h, frame++);
 #ifdef _WIN32
-		Sleep( 5000);
+		Sleep( 500);
 #else
 		usleep( 500000);
 #endif
