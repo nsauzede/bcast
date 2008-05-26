@@ -1,4 +1,4 @@
-TARGET= srv.exe cli.exe scli.exe scli2.exe
+TARGET= srv.exe cli.exe scli.exe scli2.exe s.exe c.exe
 
 UNAME=$(shell uname)
 
@@ -30,6 +30,12 @@ endif
 all:	$(TARGET)
 
 srv.exe:	srv.o
+	$(CC) -o $@ $^ $(LDFLAGS) $(SRV_LDFLAGS)
+
+s.exe:	s.o
+	$(CC) -o $@ $^ $(LDFLAGS) $(SRV_LDFLAGS)
+
+c.exe:	c.o
 	$(CC) -o $@ $^ $(LDFLAGS) $(SRV_LDFLAGS)
 
 cli.exe:	cli.o
