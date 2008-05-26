@@ -118,48 +118,72 @@ SOCKET sock;
 
 int sock_thread( void *opaque)
 {
+	pixel_t *_bits = NULL;
+	int _width = width;
+	int _height = height;
+	int _res_changed = 0;
+
 	int done = 0;
 	while (!done)
 	{
 		int n;
 		int w, h, f;
 
-LOCK();
-		if (!bits)
+		if (!_bits)
 		{
-			bits = malloc( width * height * sizeof(pixel_t));
-			res_changed = 1;
+			_bits = malloc( _width * _height * sizeof(pixel_t));
 		}
-		n = recv_bits( sock, bits, width, height, &w, &h, &f);
+		n = recv_bits( sock, _bits, _width, _height, &w, &h, &f);
+#if 1
+		int i, j;
+		for (j = 0; j < _height; j++)
+		{
+			for (i = 0; i < _width; i++)
+			{
+				printf( " %02X:%02X:%02X", _bits[j * _width + i].r, _bits[j * _width + i].g, _bits[j * _width + i].b);
+			}
+			printf( "\n");
+		}
+#endif
+#if 1
+LOCK();
 		if (n == -1)
 		{
 			break;
 		}
 		if (n == 1)
 		{
-			printf( "changing dims from %dx%d to %dx%d\n", width, height, w, h);
-			width = w;
-			height = h;
+			printf( "changing dims from %dx%d to %dx%d\n", _width, _height, w, h);
+			_width = width = w;
+			_height = height = h;
+			_res_changed = 1;
+			if (_bits)
+			{
+				free( _bits);
+				_bits = NULL;
+			}
+#if 1
 			if (bits)
 			{
 				free( bits);
 				bits = NULL;
 			}
-			continue;
-		}
-		printf( "received frame %d, dims=%dx%d\n", f, width, height);
-#if 1
-		int i, j;
-		for (j = 0; j < height; j++)
-		{
-			for (i = 0; i < width; i++)
-			{
-				printf( " %02X:%02X:%02X", bits[j * width + i].r, bits[j * width + i].g, bits[j * width + i].b);
-			}
-			printf( "\n");
-		}
+			bits = malloc( _width * _height * sizeof(pixel_t));
+			res_changed = 1;
 #endif
+		}
+		else
+		{
+			printf( "received frame %d, dims=%dx%d\n", f, _width, _height);
+#if 1
+			if (_bits && bits)
+			{
+				memcpy( bits, _bits, _width * _height * sizeof(pixel_t));
+			}
+#endif
+		}
 UNLOCK();
+#endif
 	}
 	return 0;
 }

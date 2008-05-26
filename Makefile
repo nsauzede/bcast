@@ -17,7 +17,8 @@ endif
 
 SDL_CONFIG=sdl-config
 SDL_CFLAGS=`$(SDL_CONFIG) --cflags`
-SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
+SDL_LDFLAGS=-L/opt/lib -lmingw32 -lSDLmain -lSDL
+#SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
 
 
 all:	$(TARGET)
