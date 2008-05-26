@@ -134,7 +134,7 @@ int sock_thread( void *opaque)
 			_bits = malloc( _width * _height * sizeof(pixel_t));
 		}
 		n = recv_bits( sock, _bits, _width, _height, &w, &h, &f);
-#if 1
+#if 0
 		int i, j;
 		for (j = 0; j < _height; j++)
 		{
@@ -174,7 +174,7 @@ LOCK();
 		}
 		else
 		{
-			printf( "received frame %d, dims=%dx%d\n", f, _width, _height);
+//			printf( "received frame %d, dims=%dx%d\n", f, _width, _height);
 #if 1
 			if (_bits && bits)
 			{

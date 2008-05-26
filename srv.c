@@ -20,7 +20,8 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 	POINT p;
 	p.x = x;
 	p.y = y;
-	hwnd = WindowFromPoint( p);
+//	hwnd = WindowFromPoint( p);
+	hwnd = GetDesktopWindow();
 	if (hwnd == NULL)
 	{
 		printf( "%s: Failed to get HWND at (%d;%d)\n", __func__, x, y);
@@ -40,7 +41,8 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 		{
 //			printf( "%s: got rect=(%ld;%ld;%ld;%ld)\n", __func__, rect.left, rect.right, rect.top, rect.bottom);
 			HDC hdc;
-			hdc = GetDC( hwnd);
+//			hdc = GetDC( hwnd);
+			hdc = GetWindowDC( hwnd);
 			if (hdc == NULL)
 			{
 				printf( "%s: Failed to get HDC of HWND=%p\n", __func__, hwnd);
@@ -48,8 +50,7 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 			else
 			{
 //				printf( "%s: got HDC=%p\n", __func__, hdc);
-				x = 0;
-				y = 0;
+//				x = 0;				y = 0;
 				COLORREF cref;
 				int i, j;
 				for (j = 0; j < h; j++)
@@ -88,9 +89,15 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 		{
 			unsigned long pixel;
 			pixel = XGetPixel( pImage, i, j);
+#if 0
 			dest->b = pixel & 0xFF;
 			dest->g = (pixel & 0xFF00) >> 8;
 			dest->r = (pixel & 0xFF0000) >> 16;
+#else
+			dest->r = pixel & 0xFF;
+			dest->g = (pixel & 0xFF00) >> 8;
+			dest->b = (pixel & 0xFF0000) >> 16;
+#endif
 			dest++;
 		}
 	}
@@ -180,8 +187,8 @@ int main()
 {
 #define W 40
 #define H 40
-#define X 10
-#define Y 10
+#define X 100
+#define Y 100
 #define ADDR "127.0.0.1"
 #define PORT 12345
 	pixel_t *dest = NULL;
@@ -201,7 +208,7 @@ int main()
 	while (1)
 	{
 		get_bits( x, y, w, h, dest);
-#if 1
+#if 0
 		int i, j;
 		printf( "about to send frame %d, dims=%dx%d :\n", frame, w, h);
 		for (j = 0; j < h; j++)
