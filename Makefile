@@ -1,4 +1,4 @@
-TARGET= srv.exe cli.exe scli.exe
+TARGET= srv.exe cli.exe scli.exe scli2.exe
 
 UNAME=$(shell uname)
 
@@ -30,6 +30,10 @@ cli.exe:	cli.o
 
 scli.o:	CFLAGS+=$(SDL_CFLAGS)
 scli.exe:	scli.o
+	$(CC) -o $@ $^ $(LDFLAGS) $(SDL_LDFLAGS)
+
+scli2.o:	CFLAGS+=$(SDL_CFLAGS)
+scli2.exe:	scli2.o
 	$(CC) -o $@ $^ $(LDFLAGS) $(SDL_LDFLAGS)
 
 clean:
