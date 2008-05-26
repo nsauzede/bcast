@@ -41,7 +41,7 @@ int main( int argc, char* argv[])
 	sock = create_sock( port, addr);
 	int n;
 	char str[1024];
-	printf( "receiving..\n");
+	printf( "receiving on %d..\n", port);
 	n = recv( sock, str, sizeof( str), 0);
 	if (n > (sizeof( str) - 1))
 		n = sizeof( str) - 1;
