@@ -12,7 +12,7 @@ CFLAGS+=-g -O0 -fno-omit-frame-pointer
 ifdef WIN32
 LDFLAGS+=-luser32 -lgdi32 -lws2_32
 else
-SRV_LDFLAGS=-lX11
+SRV_LDFLAGS=-L/usr/X11R6/lib64 -L/usr/X11R6/lib -lX11
 endif
 
 SDL_CONFIG=sdl-config
