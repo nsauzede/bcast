@@ -17,10 +17,13 @@ endif
 
 SDL_CONFIG=sdl-config
 SDL_CFLAGS=`$(SDL_CONFIG) --cflags`
-SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
 ifdef WIN32
 # remove -mwindows to get stdout output
-SDL_LDFLAGS+=-mno-windows
+#SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
+#SDL_LDFLAGS+=-mnowindows
+SDL_LDFLAGS=-L/usr/local/lib -lmingw32 -lSDLmain -lSDL
+else
+SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
 endif
 
 

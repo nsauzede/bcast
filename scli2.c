@@ -43,7 +43,7 @@ int recv_bits( SOCKET sock, void *dest, int cur_width, int cur_height, int *widt
 	{
 		int n;
 		
-//		printf( "about to recv packet..\n");
+		printf( "about to recv packet..\n");
 		n = recv( sock, (void *)&packet, sizeof(packet), 0);
 		if (n == SOCKET_ERROR)
 		{

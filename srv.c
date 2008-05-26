@@ -171,8 +171,8 @@ SOCKET create_sock( int port, char *addr)
 	WSAStartup( ver, &wsadata);
 #endif
 	s = socket( AF_INET, SOCK_DGRAM, 0);
-	int on = 1;
-	setsockopt( s, SOL_SOCKET, SO_BROADCAST, (void *)&on, sizeof( on));
+//	char on = '1';
+//	setsockopt( s, SOL_SOCKET, SO_BROADCAST, (void *)&on, sizeof( on));
 	struct sockaddr_in sa;
 	memset( &sa, 0, sizeof( sa));
 	sa.sin_family = PF_INET;

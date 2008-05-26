@@ -33,3 +33,6 @@ typedef struct packet {
 
 #pragma pack()
 
+#ifdef _WIN32
+#define printf(...) do{fprintf(stderr,__VA_ARGS__);}while(0)
+#endif
