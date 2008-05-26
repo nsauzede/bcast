@@ -207,7 +207,12 @@ int main( int argc, char* argv[])
 #endif
 	int port = PORT;
 	char *addr = ADDR;
+	int arg = 1;
 
+	if (argc > arg)
+	{
+		addr = argv[arg++];
+	}
 	printf( "initing sdl..\n");
 	sdl_init();
 	printf( "initing sock..\n");

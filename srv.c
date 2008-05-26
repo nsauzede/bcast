@@ -183,7 +183,7 @@ SOCKET create_sock( int port, char *addr)
 	return s;
 }
 
-int main()
+int main( int argc, char *argv[])
 {
 #define W 40
 #define H 40
@@ -200,7 +200,12 @@ int main()
 	SOCKET sock;
 	int port = PORT;
 	char *addr = ADDR;
+	int arg = 1;
 
+	if (argc > arg)
+	{
+		addr = argv[arg++];
+	}
 	sock = create_sock( port, addr);
 	size = sizeof(*dest) * w * h;
 	dest = malloc( sizeof( *dest) * w * h);
