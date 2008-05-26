@@ -227,9 +227,9 @@ int main( int argc, char *argv[])
 #endif
 		send_bits( sock, dest, size, w, h, frame++);
 #ifdef _WIN32
-		Sleep( 500);
+		Sleep( 900);
 #else
-		usleep( 500000);
+		usleep( 900000);
 #endif
 
 	}
