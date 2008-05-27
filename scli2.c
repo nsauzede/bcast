@@ -209,10 +209,10 @@ int init_sock( int port, char *addr)
 int main( int argc, char* argv[])
 {
 #define PORT 12345
-#if 1
+#if 0
 #define ADDR "127.0.0.1"
 #else
-#define ADDR "192.168.0.10"
+#define ADDR "0.0.0.0"
 #endif
 	int port = PORT;
 	char *addr = ADDR;
