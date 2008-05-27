@@ -15,14 +15,36 @@ SOCKET create_sock( int port, char *addr)
 	WSAStartup( ver, &wsadata);
 #endif
 	s = socket( AF_INET, SOCK_DGRAM, 0);
-//	char on = '1';
-//	setsockopt( s, SOL_SOCKET, SO_BROADCAST, (void *)&on, sizeof( on));
+	if (s == -1)
+	{
+		perror( "socket");
+		exit( 1);
+	}
+	int on = 1;
+	if (setsockopt( s, SOL_SOCKET, SO_BROADCAST, (void *)&on, sizeof( on)) == -1)
+	{
+		perror( "setsockopt");
+		exit( 2);
+	}
 	struct sockaddr_in sa;
 	memset( &sa, 0, sizeof( sa));
 	sa.sin_family = PF_INET;
 	sa.sin_port = htons( port);
 	sa.sin_addr.s_addr = inet_addr( addr);
-	connect( s, (struct sockaddr *)&sa, sizeof( sa));
+//	sa.sin_addr.s_addr = INADDR_ANY;
+#if 1
+	if (connect( s, (struct sockaddr *)&sa, sizeof( sa)) == -1)
+	{
+		perror( "connect");
+		exit( 3);
+	}
+#else
+	if (bind( s, (struct sockaddr *)&sa, sizeof( sa)) == -1)
+	{
+		perror( "bind");
+		exit( 3);
+	}
+#endif
 
 	return s;
 }

@@ -188,12 +188,19 @@ SOCKET create_sock( int port, char *addr)
 	sa.sin_port = htons( port);
 	sa.sin_addr.s_addr = inet_addr( addr);
 //	sa.sin_addr.s_addr = INADDR_ANY;
-//	connect( s, (struct sockaddr *)&sa, sizeof( sa));
+#if 1
+	if (connect( s, (struct sockaddr *)&sa, sizeof( sa)) == -1)
+	{
+		perror( "connect");
+		exit( 3);
+	}
+#else
 	if (bind( s, (struct sockaddr *)&sa, sizeof( sa)) == -1)
 	{
 		perror( "bind");
 		exit( 3);
 	}
+#endif
 
 	return s;
 }
