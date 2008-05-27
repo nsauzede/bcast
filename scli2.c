@@ -19,12 +19,21 @@ SOCKET create_sock( int port, char *addr)
 	WSAStartup( ver, &wsadata);
 #endif
 	s = socket( AF_INET, SOCK_DGRAM, 0);
+	if (s == -1)
+	{
+		perror( "socket");
+		exit( 1);
+	}
 	struct sockaddr_in sa;
 	memset( &sa, 0, sizeof( sa));
 	sa.sin_family = PF_INET;
 	sa.sin_port = htons( port);
 	sa.sin_addr.s_addr = inet_addr( addr);
-	bind( s, (struct sockaddr *)&sa, sizeof( sa));
+	if (bind( s, (struct sockaddr *)&sa, sizeof( sa)) == -1)
+	{
+		perror( "bind");
+		exit( 2);
+	}
 
 	return s;
 }
