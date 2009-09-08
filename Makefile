@@ -6,6 +6,8 @@ ifeq ($(UNAME),MINGW32_NT-5.1)
 WIN32=1
 endif
 
+CC=gcc
+
 CFLAGS=-Wall -Werror
 CFLAGS+=-g -O0 -fno-omit-frame-pointer
 
