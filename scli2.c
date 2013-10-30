@@ -130,7 +130,7 @@ int sock_thread( void *opaque)
 	pixel_t *_bits = NULL;
 	int _width = width;
 	int _height = height;
-	int _res_changed = 0;
+//	int _res_changed = 0;
 
 	int done = 0;
 	while (!done)
@@ -165,7 +165,7 @@ LOCK();
 			printf( "changing dims from %dx%d to %dx%d\n", _width, _height, w, h);
 			_width = width = w;
 			_height = height = h;
-			_res_changed = 1;
+//			_res_changed = 1;
 			if (_bits)
 			{
 				free( _bits);

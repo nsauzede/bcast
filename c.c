@@ -47,6 +47,7 @@ int main( int argc, char* argv[])
 		n = sizeof( str) - 1;
 	str[n] = 0;
 	printf( "recv returned %d [%s]\n", n, str);
+	getchar();
 
 	return 0;
 }

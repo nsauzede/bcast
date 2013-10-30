@@ -17,11 +17,14 @@ int get_bits( int x, int y, int w, int h, pixel_t *dest)
 		return -1;
 #ifdef _WIN32
 	HWND hwnd;
+#if 0
 	POINT p;
 	p.x = x;
 	p.y = y;
-//	hwnd = WindowFromPoint( p);
+	hwnd = WindowFromPoint( p);
+#else
 	hwnd = GetDesktopWindow();
+#endif
 	if (hwnd == NULL)
 	{
 		printf( "%s: Failed to get HWND at (%d;%d)\n", __func__, x, y);

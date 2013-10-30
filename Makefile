@@ -1,9 +1,14 @@
 TARGET= srv.exe cli.exe scli.exe scli2.exe s.exe c.exe
+TARGET+=ssrv.exe
 
 UNAME=$(shell uname)
 
 ifeq ($(UNAME),MINGW32_NT-5.1)
 WIN32=1
+else
+ifeq ($(UNAME),MINGW32_NT-6.1)
+WIN32=1
+endif
 endif
 
 CC=gcc
@@ -17,17 +22,11 @@ else
 SRV_LDFLAGS=-L/usr/X11R6/lib64 -L/usr/X11R6/lib -lX11
 endif
 
+#LDFLAGS+=-static
+
 SDL_CONFIG=sdl-config
 SDL_CFLAGS=`$(SDL_CONFIG) --cflags`
-ifdef WIN32
-# remove -mwindows to get stdout output
-#SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
-#SDL_LDFLAGS+=-mnowindows
-SDL_LDFLAGS=-L/usr/local/lib -lmingw32 -lSDLmain -lSDL
-else
-SDL_LDFLAGS=`$(SDL_CONFIG) --libs`
-endif
-
+SDL_LDFLAGS=`$(SDL_CONFIG) --static-libs`
 
 all:	$(TARGET)
 
@@ -50,6 +49,10 @@ scli.exe:	scli.o
 scli2.o:	CFLAGS+=$(SDL_CFLAGS)
 scli2.exe:	scli2.o
 	$(CC) -o $@ $^ $(LDFLAGS) $(SDL_LDFLAGS)
+
+ssrv.o:	CFLAGS+=$(SDL_CFLAGS)
+ssrv.exe:	ssrv.o
+	$(CC) -o $@ $^ $(LDFLAGS) $(SRV_LDFLAGS) $(SDL_LDFLAGS)
 
 clean:
 	$(RM) $(TARGET) *.o
